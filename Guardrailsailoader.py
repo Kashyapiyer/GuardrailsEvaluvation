@@ -26,12 +26,14 @@ class guardloader():
       self.llmconf = read_yaml_conf(configfile)
       self.contextinp = contextinp
       self.logger = logger
+      self.allowedvalidations = self.llmconf[allowedvalidations]
 
   def evalrunner(self,validation_args):
-
-      allowedvalidations = ["full", "deterministic", "probablistic"]
-
-      if validation_args not in allowedvalidations:
+      """
+      wrapper runner to invoke deterministic and probabilistic eval functions 
+      allowedvalidations list("full", "deterministic", "probablistic") will be consumed from conf
+      """    
+      if validation_args not in self.allowedvalidations:
             raise ValueError('selected {validation_args} not allowed. please select from {allowedvalidations}')
       
       try:
@@ -39,7 +41,7 @@ class guardloader():
            if validation_args == "deterministic":
               self.deterministiceval(self.contextinp)
 
-           elif validation_args == "probablisticeval":
+           elif validation_args == "probablistic":
               self.probablisticeval(self.contextinp)
 
            else:    
@@ -59,7 +61,7 @@ class guardloader():
           """
           try:
 
-              # refer pii_entities from conf ['PERSON', 'PHONE_NUMBER', 'EMAIL_ADDRESS', 'US_SSN', 'US_BANK_NUMBER', 'US_DRIVER_LICENSE','GENERIC_PII', 'NRP', 'DATE_TIME'],
+              # refer pii_entities from conf 
               self.pii_entities = self.llmconf[pii_entities]
 
               guard = Guard().use_many(
@@ -96,7 +98,7 @@ class guardloader():
               response = json.loads(response.json())
               return response
           except Exception as errmsg:
-              logger.info("at error block")
+              logger.error("error while validating deterministiceval")
               return errmsg.args[0]
 
 
@@ -134,6 +136,6 @@ class guardloader():
               response = json.loads(response.json())
               return response
           except Exception as errmsg:
-              logger.info("at error block")
+              logger.error("error while validating probablisticeval")
               return errmsg.args[0]
     
