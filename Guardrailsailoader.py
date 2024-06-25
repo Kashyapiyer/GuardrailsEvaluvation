@@ -18,7 +18,7 @@ import torch
 import os,json,sys
 import logging 
 
-class guardloader():
+class guardloader:
 
 
   def __init__(self,configfile, contextinp:str, validation_args="full" logger) -> None:
