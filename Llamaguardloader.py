@@ -42,7 +42,6 @@ class Llamaguardloader():
           return response
 
       except Exception as e:
-          print(e)
           self.logger.error(f"encountered issue while processing prompt: {e}")
           sys.exit(1)
 
