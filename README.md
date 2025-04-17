@@ -1,4 +1,4 @@
-Evalvation of different guardrail framework across diverse scenarios 
+Evaluation of different guardrail framework across diverse scenarios 
 =====
 
 
